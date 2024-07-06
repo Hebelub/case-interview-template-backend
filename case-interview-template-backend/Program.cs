@@ -7,10 +7,26 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
-
+builder.Services.AddControllersWithViews();
+// Add HttpClient service
+builder.Services.AddHttpClient();
+builder.Services.AddDistributedMemoryCache();
+builder.Logging.AddConsole();
 var app = builder.Build();
 
 using (var service = app.Services.CreateScope())
@@ -26,6 +42,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthorization();
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

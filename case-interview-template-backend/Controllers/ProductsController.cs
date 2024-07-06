@@ -20,21 +20,8 @@ namespace case_interview_template_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> Get()
         {
-            try
-            {
-                var products = await _context.Products.ToListAsync();
-
-                if (products == null || products.Count == 0)
-                {
-                    return NotFound("No products found.");
-                }
-
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
-            }
+            var products = await _context.Products.Include(x => x.cathegory).ToListAsync();
+            return Ok(products);
         }
     }
 }
