@@ -16,9 +16,9 @@ public class ApplicationDbInitializer
 
         var categories = new Category[]
         {
-            new Category {name = "Electronics"},
-            new Category {name = "Clothing"},
-            new Category {name = "Books"}
+            new Category {Name = "Electronics"},
+            new Category {Name = "Clothing"},
+            new Category {Name = "Books"}
         };
 
         foreach (var category in categories)
@@ -30,9 +30,9 @@ public class ApplicationDbInitializer
 
         var products = new Product[]
         {
-            new Product {name = "Laptop", description = "A laptop", price = 1000, categoryId = 1},
-            new Product {name = "T-shirt", description = "A t-shirt", price = 20, categoryId = 2},
-            new Product {name = "Book", description = "A book", price = 10, categoryId = 3}
+            new Product {Name = "Laptop", Description = "A laptop", Price = 1000, CategoryId = 1},
+            new Product {Name = "T-shirt", Description = "A t-shirt", Price = 20, CategoryId = 2},
+            new Product {Name = "Book", Description = "A book", Price = 10, CategoryId = 3}
         };
 
         foreach (var product in products)

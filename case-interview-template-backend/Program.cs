@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -23,15 +24,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddControllersWithViews();
-// Add HttpClient service
 builder.Services.AddHttpClient();
 builder.Services.AddDistributedMemoryCache();
 builder.Logging.AddConsole();
 var app = builder.Build();
 
-using (var service = app.Services.CreateScope())
+// Initialize the database
+using (var serviceScope = app.Services.CreateScope())
 {
-    var context = service.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     ApplicationDbInitializer.Initialize(context);
 }
 
@@ -42,8 +43,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.MapControllers();
 
