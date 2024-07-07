@@ -20,7 +20,7 @@ namespace case_interview_template_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> Get()
         {
-            var products = await _context.Products.Include(x => x.cathegory).ToListAsync();
+            var products = await _context.Products.Include(x => x.Category).ToListAsync();
             return Ok(products);
         }
     }

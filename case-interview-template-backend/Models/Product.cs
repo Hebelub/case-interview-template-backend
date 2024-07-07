@@ -6,7 +6,6 @@ public class Product
     public string name { get; set; }
     public string description { get; set; }
     public double price { get; set; }
-    
-    public int cathegoryId { get; set; }
-    public Cathegory cathegory { get; set; }
+    public int categoryId { get; set; }
+    public Category Category { get; set; }
 }

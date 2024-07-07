@@ -6,32 +6,33 @@ public class ApplicationDbInitializer
 {
     public static void Initialize(ApplicationDbContext context)
     {
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
 
-        if (context.Cathegories.Any())
+        if (context.Categories.Any())
         {
             return;
         }
 
-        var cathegories = new Cathegory[]
+        var categories = new Category[]
         {
-            new Cathegory {name = "Electronics"},
-            new Cathegory {name = "Clothing"},
-            new Cathegory {name = "Books"}
+            new Category {name = "Electronics"},
+            new Category {name = "Clothing"},
+            new Category {name = "Books"}
         };
 
-        foreach (var cathegory in cathegories)
+        foreach (var category in categories)
         {
-            context.Cathegories.Add(cathegory);
+            context.Categories.Add(category);
         }
 
         context.SaveChanges();
 
         var products = new Product[]
         {
-            new Product {name = "Laptop", description = "A laptop", price = 1000, cathegoryId = 1},
-            new Product {name = "T-shirt", description = "A t-shirt", price = 20, cathegoryId = 2},
-            new Product {name = "Book", description = "A book", price = 10, cathegoryId = 3}
+            new Product {name = "Laptop", description = "A laptop", price = 1000, categoryId = 1},
+            new Product {name = "T-shirt", description = "A t-shirt", price = 20, categoryId = 2},
+            new Product {name = "Book", description = "A book", price = 10, categoryId = 3}
         };
 
         foreach (var product in products)
