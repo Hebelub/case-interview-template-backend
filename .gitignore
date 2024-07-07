@@ -1,5 +1,79 @@
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Node.js
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Optional npm cache directory
+.npm
+
+# Miscellaneous
+.DS_Store
+*.swp
+
+# Yarn
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+.pnp
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# Build Folders (bin/obj)
 bin/
 obj/
-/packages/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+Generated/
+
+# Rider-specific files
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+.vscode/
+
+# Packages
+packages/
+
+# Backup & security
+*.bak
+*.swp
+*.pfx
+
+# Project files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Other
 riderModule.iml
 /_ReSharper.Caches/
