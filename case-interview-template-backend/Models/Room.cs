@@ -1,11 +1,10 @@
 ﻿namespace case_interview_template_backend.Models;
 
-public class Product
+public class Room
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public double Price { get; set; }
+    public int RoomNumber { get; set; }
     public int CategoryId { get; set; }
     public Category Category { get; set; }
+    public string Status { get; set; } // Available, Occupied, Reserved, OutOfService
 }
