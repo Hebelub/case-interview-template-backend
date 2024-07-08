@@ -7,4 +7,5 @@ public class Room
     public int CategoryId { get; set; }
     public Category Category { get; set; }
     public string Status { get; set; } // Available, Occupied, Reserved, OutOfService
+    public List<Booking> Bookings { get; set; }
 }

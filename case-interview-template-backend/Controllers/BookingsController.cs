@@ -68,17 +68,21 @@ namespace case_interview_template_backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Booking>> Book(Booking booking)
         {
-            // Validation logic: Check if the room is available for the specified period
-            bool isRoomAvailable = !_context.Bookings
-                .Any(b => b.RoomId == booking.RoomId
-                          && ((booking.StartDate >= b.StartDate && booking.StartDate < b.EndDate) ||
-                              (booking.EndDate > b.StartDate && booking.EndDate <= b.EndDate) ||
-                              (booking.StartDate <= b.StartDate && booking.EndDate >= b.EndDate)));
+            // Find available room with the specified category for the given period
+            var availableRoom = _context.Rooms
+                .Include(r => r.Bookings) // Ensure we include bookings related to each room
+                .Where(r => r.CategoryId == booking.Room.CategoryId)
+                .FirstOrDefault(r => r.Bookings.All(b =>
+                    (booking.StartDate < b.StartDate || booking.StartDate >= b.EndDate) &&
+                    (booking.EndDate <= b.StartDate || booking.EndDate > b.EndDate)));
 
-            if (!isRoomAvailable)
+            if (availableRoom == null)
             {
-                return BadRequest("The room is not available for the selected period.");
+                return BadRequest("No rooms of the selected category are available for the specified period.");
             }
+            
+            // Set the RoomId to the available room
+            booking.RoomId = availableRoom.Id;
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
