@@ -10,28 +10,28 @@ namespace case_interview_template_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Products
+        // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> Get()
+        public async Task<ActionResult<List<Category>>> Get()
         {
-            var products = await _context.Products.Include(x => x.Category).ToListAsync();
+            var products = await _context.Categories.ToListAsync();
             return Ok(products);
         }
 
-        // GET: api/Products/{id}
+        // GET: api/Categories/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<ActionResult<Category>> GetById(int id)
         {
-            var product = await _context.Products.Include(x => x.Category).FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _context.Categories.FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
@@ -41,73 +41,35 @@ namespace case_interview_template_backend.Controllers
             return Ok(product);
         }
 
-        // POST: api/Products
-        [HttpPost]
-        public async Task<ActionResult<Product>> Create(Product product)
-        {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
-        }
-
-        // PUT: api/Products/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Product product)
-        {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
-            }
-
-            return NoContent();
-        }
-
-        // DELETE: api/Products/{id}
+        // DELETE: api/Categories/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Categories.FindAsync(id);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            _context.Categories.Remove(product);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // DELETE: api/Products
+        // DELETE: api/Categories
         [HttpDelete]
         public async Task<IActionResult> DeleteAll()
         {
-            var products = await _context.Products.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
 
-            if (products == null || products.Count == 0)
+            if (categories == null || categories.Count == 0)
             {
                 return NotFound();
             }
 
-            _context.Products.RemoveRange(products);
+            _context.Categories.RemoveRange(categories);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -115,7 +77,7 @@ namespace case_interview_template_backend.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

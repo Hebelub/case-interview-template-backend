@@ -10,28 +10,28 @@ namespace case_interview_template_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class RoomsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public RoomsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Products
+        // GET: api/Rooms
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> Get()
+        public async Task<ActionResult<List<Room>>> Get()
         {
-            var products = await _context.Products.Include(x => x.Category).ToListAsync();
-            return Ok(products);
+            var room = await _context.Rooms.Include(x => x.Category).ToListAsync();
+            return Ok(room);
         }
 
-        // GET: api/Products/{id}
+        // GET: api/Rooms/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<ActionResult<Room>> GetById(int id)
         {
-            var product = await _context.Products.Include(x => x.Category).FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _context.Rooms.FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
@@ -41,26 +41,26 @@ namespace case_interview_template_backend.Controllers
             return Ok(product);
         }
 
-        // POST: api/Products
+        // POST: api/Rooms
         [HttpPost]
-        public async Task<ActionResult<Product>> Create(Product product)
+        public async Task<ActionResult<Room>> Create(Room product)
         {
-            _context.Products.Add(product);
+            _context.Rooms.Add(product);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
 
-        // PUT: api/Products/{id}
+        // PUT: api/Rooms/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Product product)
+        public async Task<IActionResult> Update(int id, Room room)
         {
-            if (id != product.Id)
+            if (id != room.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(room).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace case_interview_template_backend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!RoomExists(id))
                 {
                     return NotFound();
                 }
@@ -79,43 +79,43 @@ namespace case_interview_template_backend.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Products/{id}
+        // DELETE: api/Rooms/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var room = await _context.Rooms.FindAsync(id);
 
-            if (product == null)
+            if (room == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // DELETE: api/Products
+        // DELETE: api/Rooms
         [HttpDelete]
         public async Task<IActionResult> DeleteAll()
         {
-            var products = await _context.Products.ToListAsync();
+            var rooms = await _context.Rooms.ToListAsync();
 
-            if (products == null || products.Count == 0)
+            if (rooms == null || rooms.Count == 0)
             {
                 return NotFound();
             }
 
-            _context.Products.RemoveRange(products);
+            _context.Rooms.RemoveRange(rooms);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductExists(int id)
+        private bool RoomExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Rooms.Any(e => e.Id == id);
         }
     }
 }

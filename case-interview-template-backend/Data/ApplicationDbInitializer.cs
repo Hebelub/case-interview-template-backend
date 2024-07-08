@@ -14,6 +14,7 @@ public class ApplicationDbInitializer
             return;
         }
 
+        // Seed Categories
         var categories = new Category[]
         {
             new Category {Name = "Electronics"},
@@ -28,16 +29,55 @@ public class ApplicationDbInitializer
 
         context.SaveChanges();
 
-        var products = new Product[]
+        // Seed Users
+        var users = new User[]
         {
-            new Product {Name = "Laptop", Description = "A laptop", Price = 1000, CategoryId = 1},
-            new Product {Name = "T-shirt", Description = "A t-shirt", Price = 20, CategoryId = 2},
-            new Product {Name = "Book", Description = "A book", Price = 10, CategoryId = 3}
+            new User {FirstName = "John", LastName = "Doe", Email = "john.doe@example.com"},
+            new User {FirstName = "Jane", LastName = "Smith", Email = "jane.smith@example.com"}
         };
 
-        foreach (var product in products)
+        foreach (var user in users)
         {
-            context.Products.Add(product);
+            context.Users.Add(user);
+        }
+
+        context.SaveChanges();
+
+        // Seed Rooms
+        var rooms = new Room[]
+        {
+            new Room {RoomNumber = 101, CategoryId = 1, Status = "Available"},
+            new Room {RoomNumber = 102, CategoryId = 2, Status = "Occupied"},
+            new Room {RoomNumber = 103, CategoryId = 3, Status = "OutOfService"}
+        };
+
+        foreach (var room in rooms)
+        {
+            context.Rooms.Add(room);
+        }
+
+        context.SaveChanges();
+
+        // Seed Bookings
+        var bookings = new Booking[]
+        {
+            new Booking
+            {
+                RoomId = 1, UserId = 1, StartDate = DateTime.Now.AddDays(-10), EndDate = DateTime.Now.AddDays(-5), Status = "Completed"
+            },
+            new Booking
+            {
+                RoomId = 2, UserId = 2, StartDate = DateTime.Now.AddDays(-3), EndDate = DateTime.Now.AddDays(2), Status = "CheckedIn"
+            },
+            new Booking
+            {
+                RoomId = 3, UserId = 1, StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(6), Status = "Reserved"
+            }
+        };
+
+        foreach (var booking in bookings)
+        {
+            context.Bookings.Add(booking);
         }
 
         context.SaveChanges();

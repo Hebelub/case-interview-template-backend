@@ -10,57 +10,57 @@ namespace case_interview_template_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Products
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> Get()
+        public async Task<ActionResult<List<User>>> Get()
         {
-            var products = await _context.Products.Include(x => x.Category).ToListAsync();
-            return Ok(products);
+            var users = await _context.Users.ToListAsync();
+            return Ok(users);
         }
 
-        // GET: api/Products/{id}
+        // GET: api/Users/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<ActionResult<User>> GetById(int id)
         {
-            var product = await _context.Products.Include(x => x.Category).FirstOrDefaultAsync(p => p.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (product == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(user);
         }
 
-        // POST: api/Products
+        // POST: api/Users
         [HttpPost]
-        public async Task<ActionResult<Product>> Create(Product product)
+        public async Task<ActionResult<User>> Create(User user)
         {
-            _context.Products.Add(product);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
 
-        // PUT: api/Products/{id}
+        // PUT: api/Users/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Product product)
+        public async Task<IActionResult> Update(int id, User user)
         {
-            if (id != product.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace case_interview_template_backend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -79,43 +79,43 @@ namespace case_interview_template_backend.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Products/{id}
+        // DELETE: api/Users/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
-            if (product == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // DELETE: api/Products
+        // DELETE: api/Users
         [HttpDelete]
         public async Task<IActionResult> DeleteAll()
         {
-            var products = await _context.Products.ToListAsync();
+            var users = await _context.Users.ToListAsync();
 
-            if (products == null || products.Count == 0)
+            if (users == null || users.Count == 0)
             {
                 return NotFound();
             }
 
-            _context.Products.RemoveRange(products);
+            _context.Users.RemoveRange(users);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
