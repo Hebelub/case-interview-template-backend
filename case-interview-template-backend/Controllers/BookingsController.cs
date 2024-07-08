@@ -64,6 +64,28 @@ namespace case_interview_template_backend.Controllers
             return NoContent();
         }
 
+        // POST: api/Bookings
+        [HttpPost]
+        public async Task<ActionResult<Booking>> Book(Booking booking)
+        {
+            // Validation logic: Check if the room is available for the specified period
+            bool isRoomAvailable = !_context.Bookings
+                .Any(b => b.RoomId == booking.RoomId
+                          && ((booking.StartDate >= b.StartDate && booking.StartDate < b.EndDate) ||
+                              (booking.EndDate > b.StartDate && booking.EndDate <= b.EndDate) ||
+                              (booking.StartDate <= b.StartDate && booking.EndDate >= b.EndDate)));
+
+            if (!isRoomAvailable)
+            {
+                return BadRequest("The room is not available for the selected period.");
+            }
+
+            _context.Bookings.Add(booking);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetById), new { id = booking.Id }, booking);
+        }
+
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.Id == id);
