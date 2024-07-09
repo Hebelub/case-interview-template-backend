@@ -46,9 +46,9 @@ public class ApplicationDbInitializer
         // Seed Rooms
         var rooms = new Room[]
         {
-            new Room {RoomNumber = 101, CategoryId = 1, Status = "Available"},
-            new Room {RoomNumber = 102, CategoryId = 2, Status = "Occupied"},
-            new Room {RoomNumber = 103, CategoryId = 3, Status = "OutOfService"}
+            new Room {RoomNumber = 101, CategoryId = 1 },
+            new Room {RoomNumber = 102, CategoryId = 2 },
+            new Room {RoomNumber = 103, CategoryId = 3 }
         };
 
         foreach (var room in rooms)
