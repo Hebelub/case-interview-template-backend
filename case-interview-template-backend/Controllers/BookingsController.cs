@@ -71,7 +71,7 @@ namespace case_interview_template_backend.Controllers
             // Find available room with the specified category for the given period
             var availableRoom = _context.Rooms
                 .Include(r => r.Bookings) // Ensure we include bookings related to each room
-                .Where(r => r.CategoryId == booking.Room.CategoryId)
+                .Where(r => booking.Room == null || r.CategoryId == booking.Room.CategoryId)
                 .FirstOrDefault(r => r.Bookings.All(b =>
                     (booking.StartDate < b.StartDate || booking.StartDate >= b.EndDate) &&
                     (booking.EndDate <= b.StartDate || booking.EndDate > b.EndDate)));

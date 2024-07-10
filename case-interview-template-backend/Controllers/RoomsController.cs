@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace case_interview_template_backend.Controllers
@@ -13,10 +15,12 @@ namespace case_interview_template_backend.Controllers
     public class RoomsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly HttpClient _httpClient;
 
         public RoomsController(ApplicationDbContext context)
         {
             _context = context;
+            _httpClient = new HttpClient();
         }
 
         // GET: api/Rooms
@@ -24,7 +28,23 @@ namespace case_interview_template_backend.Controllers
         public async Task<ActionResult<List<Room>>> Get()
         {
             var room = await _context.Rooms.Include(x => x.Category).ToListAsync();
-            return Ok(room);
+            List<Room> room2;
+            
+            using (var httpRoomResponse = await _httpClient.GetAsync("https://api.example.com/rooms"))
+            {
+                httpRoomResponse.EnsureSuccessStatusCode();
+                var jsonString = await httpRoomResponse.Content.ReadAsStringAsync();
+                if (jsonString == null)
+                {
+                    room2 = new List<Room>();
+                }
+                else
+                {
+                    room2 = JsonSerializer.Deserialize<List<Room>>(jsonString);
+                }
+            }
+
+            return Ok(room.Concat(room2));
         }
 
         // GET: api/Rooms/{id}
